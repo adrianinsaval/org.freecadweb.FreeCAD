@@ -1,0 +1,12 @@
+name: update-beta-scheduled
+
+on:
+  schedule:
+    - cron: '0 8 * * 3'
+  workflow_dispatch:
+
+jobs:
+  call-update-revision:
+    uses: ./.github/workflows/update-revision.yml
+    with:
+      flatpak-branch: 'beta'

@@ -11,7 +11,6 @@ on:
           - commit
           - tag
           - branch
-        default: 'commit'
       gitRef:
         description: |
           git reference for the update, uses latest commit from master if not provided,
@@ -19,15 +18,22 @@ on:
         required: false
         type: string
 
+  workflow_call:
+    inputs:
+      flatpak-branch:
+        type: string
+        default: ${{ github.ref }}
 
 jobs:
   update-version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.flatpak-branch }}
 
       - name: get revision count from github and patch yaml file
-        run: ./update-revision.sh ${{github.event.inputs.refType}} ${{github.event.inputs.gitRef}}
+        run: ./update-revision.sh ${{ inputs.refType }} ${{ inputs.gitRef }}
 
       - name: push commit to branch
         run: |

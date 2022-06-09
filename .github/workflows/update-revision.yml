@@ -1,0 +1,38 @@
+name: update-revision
+
+on:
+  workflow_dispatch:
+    inputs:
+      refType:
+        description: type of git reference, it's ignored if no gitRef is given
+        required: false
+        type: choice
+        options:
+          - commit
+          - tag
+          - branch
+        default: 'commit'
+      gitRef:
+        description: |
+          git reference for the update, uses latest commit from master if not provided,
+          can be a commit hash, branch name or tag name depending on the chosen refType
+        required: false
+        type: string
+
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: get revision count from github and patch yaml file
+        run: ./update-revision.sh ${{github.event.inputs.refType}} ${{github.event.inputs.gitRef}}
+
+      - name: push commit to branch
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@users.noreply.github.com'
+          git add org.freecadweb.FreeCAD.yaml
+          git commit -m "Update revision"
+          git push

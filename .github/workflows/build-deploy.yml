@@ -1,4 +1,4 @@
-name: build-and-deploy
+name: build-deploy
 
 on:
 #  push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     env:
       CCACHE_DIR: ${{ github.workspace }}/ccache
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: install flatpak
-        run: DEBIAN_FRONTEND=noninteractive apt update && apt install flatpak flatpak-builder ccache
+        run: DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install flatpak flatpak-builder ccache
       
       - name: flatpak build cache
         uses: actions/cache@v3.0.8

@@ -33,6 +33,9 @@ jobs:
           key: ccache-${{ github.run_id }}
           restore-keys: ccache-
   
+      - name: add flathub repo
+        run: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        
       - name: build flatpak
         run: flatpak-builder -y --ccache --repo=flatpak-repo build-dir org.freecadweb.FreeCAD.yaml
         

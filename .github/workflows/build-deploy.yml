@@ -48,3 +48,5 @@ jobs:
           NETLIFY_SITE_ID: c2e3d5c6-774c-4d93-b55b-efca1da87d1f
           build_directory: flatpak-repo
           build_command: echo "skip npm"
+          use_nvm: false
+          NETLIFY_DEPLOY_TO_PROD: true

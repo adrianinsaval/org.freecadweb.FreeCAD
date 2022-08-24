@@ -1,0 +1,45 @@
+name: build-and-deploy
+
+on:
+#  push:
+#    branches: [ "beta" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/ccache
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      - name: install flatpak
+        run: DEBIAN_FRONTEND=noninteractive apt update && apt install flatpak flatpak-builder ccache
+      
+      - name: flatpak build cache
+        uses: actions/cache@v3.0.8
+        with:
+          path: ${{ github.workspace }}/.flatpak-builder
+          key: flatpak-build-${{ github.run_id }}
+          restore-keys: flatpak-build-
+
+      - name: ccache
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/ccache
+          key: ccache-${{ github.run_id }}
+          restore-keys: ccache-
+  
+      - name: build flatpak
+        run: flatpak-builder -y --ccache --repo=flatpak-repo build-dir org.freecadweb.FreeCAD.yaml
+        
+      - name: update repo
+        run: flatpak build-update-repo flatpak-repo --prune-depth=10 --generate-static-deltas
+        
+      - uses: jsmrcaga/action-netlify-deploy@v1.1.0
+        with:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          NETLIFY_SITE_ID: c2e3d5c6-774c-4d93-b55b-efca1da87d1f
+          build_directory: flatpak-repo
+          build_command: echo "skip npm"

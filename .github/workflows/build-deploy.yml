@@ -37,7 +37,7 @@ jobs:
         run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
         
       - name: build flatpak
-        run: flatpak-builder --user -y --ccache --repo=flatpak-repo build-dir org.freecadweb.FreeCAD.yaml
+        run: flatpak-builder --user --install-deps-from=flathub -y --ccache --repo=flatpak-repo build-dir org.freecadweb.FreeCAD.yaml
         
       - name: update repo
         run: flatpak build-update-repo flatpak-repo --prune-depth=10 --generate-static-deltas

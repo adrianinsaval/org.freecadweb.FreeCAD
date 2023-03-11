@@ -10,11 +10,8 @@
 refType=$1
 gitRef=$2
 
-if [ -z "$refType" ]; then
-    refType="commit"
-fi
-
 if [ -z "$gitRef" ]; then
+    refType="commit"
     gitRef=$(curl -s https://api.github.com/repos/FreeCAD/FreeCAD/commits/master \
         | awk 'NR==2' | sed 's/  "sha": "//;s/",//')
 fi
@@ -22,7 +19,7 @@ fi
 # get number of commits
 revcount=$(($(curl -s \
     'https://api.github.com/repos/FreeCAD/FreeCAD/compare/120ca87015...'"$gitRef"''\
-    | grep "ahead_by" | sed -s 's/ //g;s/"ahead_by"://;s/,//')+1))
+    | grep '"ahead_by":' | sed -s 's/ //g;s/"ahead_by"://;s/,//')+1))
 
 # replace values
 sed -i '/revcount=/!b;s/=.*/='"$revcount"'/' org.freecadweb.FreeCAD.yaml

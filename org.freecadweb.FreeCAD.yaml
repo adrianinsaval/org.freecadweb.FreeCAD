@@ -705,7 +705,6 @@ modules:
     sources:
       - type: git
         url: https://github.com/FreeCAD/FreeCAD.git
-        tag: '0.20'
         commit: 68e337670e227889217652ddac593c93b5e8dc94
       - type: file
         path: openscad.sh

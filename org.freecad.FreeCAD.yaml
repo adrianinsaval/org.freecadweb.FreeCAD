@@ -752,5 +752,6 @@ modules:
             sed -i 's|/usr|/app|g' cMake/FindOCC.cmake src/Gui/GraphvizView.cpp
             sitepackagesDir=$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["platlib"])' | sed 's|/usr|/app|')
             sed -i 's|${python_libs}|'"$sitepackagesDir"'|' src/Ext/freecad/CMakeLists.txt
+          # disable and test if it's needed
           # We need to properly set the icon name
-          - sed -i 's|name="application-x-extension-fcstd"|name="${FLATPAK_ID}.application-x-extension-fcstd"|' src/XDGData/org.freecad.FreeCAD.xml
+          #- sed -i 's|name="application-x-extension-fcstd"|name="${FLATPAK_ID}.application-x-extension-fcstd"|' src/XDGData/org.freecad.FreeCAD.xml

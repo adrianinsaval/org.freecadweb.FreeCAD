@@ -1,4 +1,4 @@
-app-id: org.freecadweb.FreeCAD
+app-id: org.freecad.FreeCAD
 default-branch: beta
 base: io.qt.qtwebengine.BaseApp
 base-version: '5.15-22.08'
@@ -733,7 +733,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/FreeCAD/FreeCAD.git
-        commit: 1580fe7c9696654803a93da8cf372f75e75149fa
+        commit: 1b64b265aeb08f9acac788a4817855850b05c007
       - type: patch
         path: patches/OpenSCAD_transfermechanism.patch
       - type: file
@@ -744,13 +744,13 @@ modules:
           # to obtain the revcount for a given gitRef (commit hash, branch or tag) run
           # echo $(($(curl -s 'https://api.github.com/repos/FreeCAD/FreeCAD/compare/120ca87015...'"$gitRef"'' | grep '"ahead_by":' | sed -s 's/ //g;s/"ahead_by"://;s/,//')+1))
           - |
-            revcount=33639
+            revcount=34297
             sed -i 's|${PACKAGE_WCREF}|'"$revcount"' (Git)|' src/Build/Version.h.cmake
-            sed -i 's|@PACKAGE_VERSION@|@PACKAGE_VERSION@.'"$revcount"'|' src/XDGData/org.freecadweb.FreeCAD.appdata.xml.in
+            sed -i 's|@PACKAGE_VERSION@|@PACKAGE_VERSION@.'"$revcount"'|' src/XDGData/org.freecad.FreeCAD.metainfo.xml.in
             sed -i 's|${PACKAGE_WCURL}|https://github.com/FreeCAD/FreeCAD.git|' src/Build/Version.h.cmake
           - | # fix paths for flatpak environment
             sed -i 's|/usr|/app|g' cMake/FindOCC.cmake src/Gui/GraphvizView.cpp
             sitepackagesDir=$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["platlib"])' | sed 's|/usr|/app|')
             sed -i 's|${python_libs}|'"$sitepackagesDir"'|' src/Ext/freecad/CMakeLists.txt
           # We need to properly set the icon name
-          - sed -i 's|name="org.freecadweb.FreeCAD"|name="org.freecadweb.FreeCAD.application-x-extension-fcstd"|' src/XDGData/org.freecadweb.FreeCAD.xml
+          - sed -i 's|name="application-x-extension-fcstd"|name="${FLATPAK_ID}.application-x-extension-fcstd"|' src/XDGData/org.freecad.FreeCAD.xml

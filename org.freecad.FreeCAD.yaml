@@ -1,9 +1,9 @@
 app-id: org.freecad.FreeCAD
 default-branch: beta
 base: io.qt.qtwebengine.BaseApp
-base-version: '5.15-22.08'
+base-version: '6.5'
 runtime: org.kde.Platform
-runtime-version: '5.15-22.08'
+runtime-version: '6.5'
 sdk: org.kde.Sdk
 command: FreeCAD
 desktop-file-name-prefix: "(beta) "
@@ -30,31 +30,45 @@ cleanup:
   - '*.a'
   - '*.la'
 cleanup-commands: [/app/cleanup-BaseApp.sh]
+build-options:
+  append-path: /usr/lib/sdk/llvm14/bin
+  append-ld-library-path: /usr/lib/sdk/llvm14/lib
 modules:
 
   - shared-modules/glu/glu-9.json
 
-  - name: pyside2
+  - name: pyside
     buildsystem: cmake-ninja
     builddir: true
     build-options:
-      prepend-path: /usr/lib/sdk/llvm14/bin
-      prepend-ld-library-path: /usr/lib/sdk/llvm14/lib
+      cxxflags: -I/run/build/pyside/sources/shiboken6/libshiboken/signature
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_TESTS=OFF
+      - -DCMAKE_SKIP_RPATH:BOOL=YES
+      - -DFORCE_LIMITED_API=OFF
     cleanup:
       - /bin
     sources:
       - type: archive
-        url: https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.15.4-src/pyside-setup-opensource-src-5.15.4.tar.xz
-        sha256: 3c68ed0def4111ef5d0641370306338d277ae8983a77eaf22f223ddd3a14450b
-      - type: patch
-        path: patches/pyside-webengine.patch
+        url: https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.5.2-src/pyside-setup-everywhere-src-6.5.2.tar.xz
+        sha256: 90dbf1d14fcd41c98a7cbea44b8a4951e10d0b798e154749756e4946654d1ba8
       - type: shell
         commands:
-          - mkdir -p /app/include/qt5tmp && cp -R /usr/include/Qt* /app/include/Qt* /app/include/qt5tmp # https://bugreports.qt.io/browse/PYSIDE-787
-          - sed -i 's|\(--include-paths=\)|\1/app/include/qt5tmp:|' sources/pyside2/cmake/Macros/PySideModules.cmake
+          - cp -R /usr/include/Qt* sources/pyside6/PySide6/
+    modules:
+      # needed as the cmake super project doesn't find the shiboken python module
+      - name: shiboken
+        buildsystem: cmake-ninja
+        builddir: true
+        subdir: sources/shiboken6
+        config-opts:
+          - -DBUILD_TESTS=OFF
+          - -DFORCE_LIMITED_API=OFF
+        sources:
+          - type: archive
+            url: https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.5.2-src/pyside-setup-everywhere-src-6.5.2.tar.xz
+            sha256: 90dbf1d14fcd41c98a7cbea44b8a4951e10d0b798e154749756e4946654d1ba8
 
   - name: swig
     config-opts:
@@ -202,12 +216,10 @@ modules:
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DSOQT_BUILD_DOCUMENTATION=OFF
-    post-install:
-      - sed -i '/Qt5/d' /app/lib/cmake/SoQt-1.6.0/soqt-config.cmake
     sources:
-      - type: archive
-        url: https://github.com/coin3d/soqt/releases/download/SoQt-1.6.0/soqt-1.6.0-src.tar.gz
-        sha256: 9f535af59f07c907022815679681bd345c9dec2f408c74833f6b1b24bca40e1f
+      - type: git
+        url: https://github.com/coin3d/soqt.git
+        commit: ab0595fe864470451ca303afb9b49c796daf2c00
 
   - name: pivy
     buildsystem: simple
@@ -709,21 +721,9 @@ modules:
       # While redundant (this triggers a warning with the linter) removing this
       # cause CMake to stop finding dependencies.
       - -DCMAKE_PREFIX_PATH=/app
-      - -DBUILD_FLAT_MESH=ON
-      - -DBUILD_QT5=ON
-      - -DSHIBOKEN_INCLUDE_DIR=/app/include/shiboken2
-      - -DPYSIDE_INCLUDE_DIR=/app/include/PySide2
+      - -DSHIBOKEN_INCLUDE_DIR=/app/include/shiboken6
+      - -DPYSIDE_INCLUDE_DIR=/app/include/PySide6
       - -DINSTALL_TO_SITEPACKAGES=ON
-    build-options:
-      arch:
-        x86_64:
-          config-opts:
-            - -DSHIBOKEN_LIBRARY=shiboken2.cpython-310-x86_64-linux-gnu
-            - -DPYSIDE_LIBRARY=pyside2.cpython-310-x86_64-linux-gnu
-        aarch64:
-          config-opts:
-            - -DSHIBOKEN_LIBRARY=shiboken2.cpython-310-aarch64-linux-gnu
-            - -DPYSIDE_LIBRARY=pyside2.cpython-310-aarch64-linux-gnu
     post-install:
       - install -Dm755 ../openscad.sh ${FLATPAK_DEST}/bin/openscad
       - ln -s /app/freecad/bin/FreeCADCmd /app/bin/FreeCADCmd

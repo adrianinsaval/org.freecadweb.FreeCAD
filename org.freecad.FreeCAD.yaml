@@ -455,16 +455,10 @@ modules:
       - /share/doc
     sources:
       - type: archive
-        url: https://www.vtk.org/files/release/8.2/VTK-8.2.0.tar.gz
-        sha256: 34c3dc775261be5e45a8049155f7228b6bd668106c72a3c435d95730d17d57bb
+        url: https://www.vtk.org/files/release/9.2/VTK-9.2.6.tar.gz
+        sha256: 06fc8d49c4e56f498c40fcb38a563ed8d4ec31358d0101e8988f0bb4d539dd12
       - type: patch
-        paths:
-          - patches/vtk-python-3.8.patch
-          - patches/vtk-qt5.15.patch
-          - patches/vtk-gcc10.patch
-      - type: shell
-        commands: # gcc-10
-          - sed -e 's|REGEX MATCH \"\[3-9\]|REGEX MATCH \"[1-9][0-9]|' -i CMake/VTKGenerateExportHeader.cmake
+        path: patches/vtk-cstdint.patch
 
   - name: rapidjson
     buildsystem: cmake-ninja
@@ -493,6 +487,7 @@ modules:
       - -DUSE_RAPIDJSON=ON
       - -DBUILD_RELEASE_DISABLE_EXCEPTIONS=OFF
       - -DBUILD_DOC_Overview=OFF
+      - -D3RDPARTY_VTK_INCLUDE_DIR=/app/include/vtk-9.2/
     cleanup:
       - /bin
     sources:
@@ -564,10 +559,10 @@ modules:
     sources:
       - type: git
         url: https://github.com/IfcOpenShell/IfcOpenShell.git
-        tag: v0.7.0a2
-        commit: a11b51c971f2c3013855e13ff1929fe712ddc7de
-      - type: patch
-        path: patches/IfcOpenShell-hdf5.patch
+        tag: v0.7.0.231127
+        commit: 58414777be599593bfdb1e04347699719af20140
+      # - type: patch
+      #   path: patches/IfcOpenShell-hdf5.patch
 
   - name: lapack
     buildsystem: cmake-ninja

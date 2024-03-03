@@ -1,9 +1,9 @@
 app-id: org.freecad.FreeCAD
 default-branch: beta
 base: io.qt.qtwebengine.BaseApp
-base-version: '6.5'
+base-version: '6.6'
 runtime: org.kde.Platform
-runtime-version: '6.5'
+runtime-version: '6.6'
 sdk: org.kde.Sdk
 command: FreeCAD
 desktop-file-name-prefix: "(beta) "

@@ -444,16 +444,6 @@ modules:
         commands:
           - sed -i 's/-o root -g root //g' Makefile.{gnu,fip}
 
-  - name: tbb
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DTBB_STRICT=OFF
-      - -DCMAKE_BUILD_TYPE=Release
-    sources:
-      - type: archive
-        url: https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2021.9.0.tar.gz
-        sha256: 1ce48f34dada7837f510735ff1172f6e2c261b09460e3bf773b49791d247d24e
-
   - name: VTK
     buildsystem: cmake-ninja
     builddir: true
@@ -499,7 +489,6 @@ modules:
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
       - -DUSE_FREEIMAGE=ON
       - -DUSE_VTK=ON
-      - -DUSE_TBB=ON
       - -DUSE_RAPIDJSON=ON
       - -DBUILD_RELEASE_DISABLE_EXCEPTIONS=OFF
       - -DBUILD_DOC_Overview=OFF
@@ -507,9 +496,9 @@ modules:
       - /bin
     sources:
       - type: git
-        url: https://gitlab.com/blobfish/occt.git/
-        # branch: V7_7_1_BF
-        commit: 1aa431e90bbe8274fa2037304cb18ae08ba10c19
+        url: https://gitlab.com/adrianinsaval/occt.git/
+        # branch: V7_8_0
+        commit: b5d88dbacd01bb5554cfdbdaf94e8786c027a4d4
 
   # new deps for IfcOpenShell
   - name: mpfr

@@ -41,7 +41,8 @@ modules:
     buildsystem: cmake-ninja
     builddir: true
     build-options:
-      cxxflags: -I/run/build/pyside/sources/shiboken6/libshiboken/signature
+      cxxflags: -I/run/build/pyside/sources/shiboken6/libshiboken/signature -I/usr/include/python3.11
+      cflags: -I/usr/include/python3.11
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_TESTS=OFF
@@ -130,8 +131,8 @@ modules:
   - name: graphviz
     sources:
       - type: archive
-        url: https://ftp.osuosl.org/pub/blfs/conglomeration/graphviz/graphviz-3.0.0.tar.bz2
-        sha256: be96c0390da30c5639c611ba5b0824d0513195ab6c0f768c91a4eca2d0bb563d
+        url: https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/9.0.0/graphviz-9.0.0.tar.gz
+        sha256: 3547d90dc80f0ac4cd900ec1a824c319a479c1e8f43883451de1aff293d7a07b
       - type: shell
         commands:
           - sed -i '/LIBPOSTFIX="64"/s/64//' configure.ac
@@ -256,8 +257,8 @@ modules:
       - /lib/python3.*/site-packages/numpy/*/tests
     sources:
       - type: archive
-        url: https://files.pythonhosted.org/packages/fb/48/b0708ebd7718a8933f0d3937513ef8ef2f4f04529f1f66ca86d873043921/numpy-1.21.4.zip
-        sha256: e6c76a87633aa3fa16614b61ccedfae45b91df2767cf097aa9c933932a7ed1e0
+        url: https://files.pythonhosted.org/packages/a4/9b/027bec52c633f6556dba6b722d9a0befb40498b9ceddd29cbe67a45a127c/numpy-1.24.4.tar.gz
+        sha256: 80f5e3a4e498641401868df4208b74581206afbee7cf7b8329daae82676d9463
 
   - name: certifi
     buildsystem: simple
@@ -643,8 +644,8 @@ modules:
       - /share/doc
     sources:
       - type: archive
-        url: https://gmsh.info/src/gmsh-4.9.5-source.tgz
-        sha256: ffd64900844208719c88d91a66c281889023132b7a9e282c51548cb9f6f3ad44
+        url: https://gmsh.info/src/gmsh-4.12.2-source.tgz
+        sha256: 13e09d9ca8102e5c40171d6ee150c668742b98c3a6ca57f837f7b64e1e2af48f
 
   - name: python3-ply
     buildsystem: simple

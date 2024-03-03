@@ -21,7 +21,7 @@ finish-args:
   - --env=SPNAV_SOCKET=/run/spnav.sock
   - --env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.llvm14
+  - org.freedesktop.Sdk.Extension.llvm15
 cleanup:
   - /include
   - /share/aclocal
@@ -31,8 +31,8 @@ cleanup:
   - '*.la'
 cleanup-commands: [/app/cleanup-BaseApp.sh]
 build-options:
-  append-path: /usr/lib/sdk/llvm14/bin
-  append-ld-library-path: /usr/lib/sdk/llvm14/lib
+  append-path: /usr/lib/sdk/llvm15/bin
+  append-ld-library-path: /usr/lib/sdk/llvm15/lib
 modules:
 
   - shared-modules/glu/glu-9.json
@@ -51,8 +51,8 @@ modules:
       - /bin
     sources:
       - type: archive
-        url: https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.5.2-src/pyside-setup-everywhere-src-6.5.2.tar.xz
-        sha256: 90dbf1d14fcd41c98a7cbea44b8a4951e10d0b798e154749756e4946654d1ba8
+        url: https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.6.2-src/pyside-setup-everywhere-src-6.6.2.tar.xz
+        sha256: 14620b694d7af4c978443016292d3d2108ba5dc105f4170e3b71eadcaf04c9f0
       - type: shell
         commands:
           - cp -R /usr/include/Qt* sources/pyside6/PySide6/
@@ -67,8 +67,8 @@ modules:
           - -DFORCE_LIMITED_API=OFF
         sources:
           - type: archive
-            url: https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.5.2-src/pyside-setup-everywhere-src-6.5.2.tar.xz
-            sha256: 90dbf1d14fcd41c98a7cbea44b8a4951e10d0b798e154749756e4946654d1ba8
+            url: https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.6.2-src/pyside-setup-everywhere-src-6.6.2.tar.xz
+            sha256: 14620b694d7af4c978443016292d3d2108ba5dc105f4170e3b71eadcaf04c9f0
 
   - name: swig
     config-opts:
@@ -243,8 +243,8 @@ modules:
       - python3 setup.py install --prefix=/app --root=/
     sources:
       - type: archive
-        url: https://files.pythonhosted.org/packages/59/e3/78c921adf4423fff68da327cc91b73a16c63f29752efe7beb6b88b6dd79d/Cython-0.29.24.tar.gz
-        sha256: cdf04d07c3600860e8c2ebaad4e8f52ac3feb212453c1764a49ac08c827e8443
+        url: https://files.pythonhosted.org/packages/2a/97/8cc3fe7c6de4796921236a64d00ca8a95565772e57f0d3caae68d880b592/Cython-0.29.37.tar.gz
+        sha256: f813d4a6dd94adee5d4ff266191d1d95bf6d4164a4facc535422c021b2504cfb
 
   - name: numpy
     buildsystem: simple

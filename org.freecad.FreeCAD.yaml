@@ -699,6 +699,15 @@ modules:
       - type: git
         url: https://github.com/fmtlib/fmt.git
         commit: a33701196adfad74917046096bf5a2aa0ab0bb50 # tag 9.1.0
+
+  - name: yaml-cpp
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DBUILD_SHARED_LIBS=ON
+    sources:
+      - type: git
+        url: https://github.com/jbeder/yaml-cpp
+        commit: f7320141120f720aecc4c32be25586e7da9eb978 # tag 0.8.0
   
   - name: FreeCAD
     buildsystem: cmake-ninja

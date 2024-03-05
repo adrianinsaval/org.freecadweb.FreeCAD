@@ -561,8 +561,10 @@ modules:
         url: https://github.com/IfcOpenShell/IfcOpenShell.git
         tag: v0.7.0.231127
         commit: 58414777be599593bfdb1e04347699719af20140
-      # - type: patch
-      #   path: patches/IfcOpenShell-hdf5.patch
+      - type: patch
+        paths:
+          - patches/IfcOpenShell-hdf5.patch
+          - patches/IfcOpenShell-occt7.8.patch
 
   - name: lapack
     buildsystem: cmake-ninja

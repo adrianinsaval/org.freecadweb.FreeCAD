@@ -1,20 +1,24 @@
---- IfcOpenShell/cmake/CMakeLists.txt-orig	2022-05-31 00:07:17.662729386 -0400
-+++ IfcOpenShell/cmake/CMakeLists.txt	2022-05-31 00:08:35.928257071 -0400
-@@ -446,7 +446,7 @@
-         	set(zlib_post lib)
-         	set(lib_ext lib)
-         else()
--        	set(lib_ext a)
-+        	set(lib_ext so)
-         endif()
+diff --git a/cmake/CMakeLists.txt b/cmake/CMakeLists.txt
+index c44f9dd..2f9d03d 100644
+--- a/cmake/CMakeLists.txt
++++ b/cmake/CMakeLists.txt
+@@ -565,7 +565,7 @@ if(HDF5_SUPPORT)
+                 set(zlib_post lib)
+                 set(lib_ext lib)
+             else()
+-                set(lib_ext a)
++                set(lib_ext so)
+             endif()
  
- 	if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-@@ -456,7 +456,5 @@
-         SET(HDF5_LIBRARIES 
-             "${HDF5_LIBRARY_DIR}/libhdf5_cpp${debug_postfix}.${lib_ext}"
-             "${HDF5_LIBRARY_DIR}/libhdf5${debug_postfix}.${lib_ext}"
--            "${HDF5_LIBRARY_DIR}/libz${zlib_post}${debug_postfix}.${lib_ext}"
--            "${HDF5_LIBRARY_DIR}/libsz${debug_postfix}.${lib_ext}"
--            "${HDF5_LIBRARY_DIR}/libaec${debug_postfix}.${lib_ext}"
-+            "/usr/lib/x86_64-linux-gnu/libz${zlib_post}${debug_postfix}.${lib_ext}"
-         )
+             if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+@@ -575,9 +575,7 @@ if(HDF5_SUPPORT)
+             set(HDF5_LIBRARIES
+                 "${HDF5_LIBRARY_DIR}/libhdf5_cpp${debug_postfix}.${lib_ext}"
+                 "${HDF5_LIBRARY_DIR}/libhdf5${debug_postfix}.${lib_ext}"
+-                "${HDF5_LIBRARY_DIR}/libz${zlib_post}${debug_postfix}.${lib_ext}"
+-                "${HDF5_LIBRARY_DIR}/libsz${debug_postfix}.${lib_ext}"
+-                "${HDF5_LIBRARY_DIR}/libaec${debug_postfix}.${lib_ext}"
++                "/usr/lib/x86_64-linux-gnu/libz${zlib_post}${debug_postfix}.${lib_ext}"
+             )
+ 
+         else()

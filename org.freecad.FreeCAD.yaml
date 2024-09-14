@@ -1,9 +1,7 @@
 app-id: org.freecad.FreeCAD
 default-branch: beta
-base: io.qt.qtwebengine.BaseApp
-base-version: '6.6'
 runtime: org.kde.Platform
-runtime-version: '6.6'
+runtime-version: '6.7'
 sdk: org.kde.Sdk
 command: FreeCAD
 desktop-file-name-prefix: "(beta) "
@@ -19,7 +17,6 @@ finish-args:
   - --talk-name=org.freedesktop.Flatpak # to launch openscad
   - --env=TMPDIR=/var/tmp
   - --env=SPNAV_SOCKET=/run/spnav.sock
-  - --env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.llvm15
 cleanup:
@@ -729,7 +726,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/FreeCAD/FreeCAD.git
-        commit: da36c0c1f307a0b8ac058809e6fd724d9cd914f5
+        commit: 60a251354e203bdb924e2190fb9f5e18b48d7362
       - type: patch
         path: patches/OpenSCAD_transfermechanism.patch
       - type: file
@@ -740,7 +737,7 @@ modules:
           # to obtain the revcount for a given gitRef (commit hash, branch or tag) run
           # echo $(($(curl -s 'https://api.github.com/repos/FreeCAD/FreeCAD/compare/120ca87015...'"$gitRef"'' | grep '"ahead_by":' | sed -s 's/ //g;s/"ahead_by"://;s/,//')+1))
           - |
-            revcount=36328
+            revcount=38642
             sed -i 's|${PACKAGE_WCREF}|'"$revcount"' (Git)|' src/Build/Version.h.cmake
             sed -i 's|@PACKAGE_VERSION@|@PACKAGE_VERSION@.'"$revcount"'|' src/XDGData/org.freecad.FreeCAD.metainfo.xml.in
             sed -i 's|${PACKAGE_WCURL}|https://github.com/FreeCAD/FreeCAD.git|' src/Build/Version.h.cmake

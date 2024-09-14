@@ -177,8 +177,8 @@ modules:
       - /share/doc
     sources:
       - type: archive
-        url: http://files.salome-platform.org/Salome/other/med-3.3.1.tar.gz
-        sha256: dd631ef813838bc7413ff0dd6461d7a0d725bcfababdf772ece67610a8d22588
+        url: https://files.salome-platform.org/Salome/medfile/med-4.1.1.tar.gz
+        sha256: a082b705d1aafe95d3a231d12c57f0b71df554c253e190acca8d26fc775fb1e6
 
   - name: libspnav
     sources:

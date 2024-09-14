@@ -153,8 +153,8 @@ modules:
       - /bin
     sources:
       - type: archive
-        url: https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.1.tar.bz2
-        sha256: 3f11b648dd18a8b878d057e9777f2c43bf78297751ad77ae2cef6db0fe80c77c
+        url: https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.5.tar.bz2
+        sha256: 6588d57c0a4bd299a24103f4e196051b29e8b55fbda49e11d5b3d32030a32776
 
   - name: hdf5
     buildsystem: cmake-ninja
@@ -165,8 +165,8 @@ modules:
       - /bin
     sources:
       - type: archive
-        url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.21/src/hdf5-1.8.21.tar.bz2
-        sha256: e5b1b1dee44a64b795a91c3321ab7196d9e0871fe50d42969761794e3899f40d
+        url: https://github.com/HDFGroup/hdf5/archive/hdf5-1_12_3.tar.gz
+        sha256: 39e2e3e25f2263f2dc3370556c174952675d7ac51c4d6f7d4f5e8b3a8bd10ac6
 
   - name: med
     buildsystem: cmake-ninja
@@ -178,8 +178,8 @@ modules:
       - /share/doc
     sources:
       - type: archive
-        url: https://files.salome-platform.org/Salome/medfile/med-4.1.1.tar.gz
-        sha256: a082b705d1aafe95d3a231d12c57f0b71df554c253e190acca8d26fc775fb1e6
+        url: https://files.salome-platform.org/Salome/medfile/med-5.0.0.tar.bz2
+        sha256: 267e76d0c67ec51c10e3199484ec1508baa8d5ed845c628adf660529dce7a3d4
 
   - name: libspnav
     sources:
@@ -206,8 +206,8 @@ modules:
       - /bin
     sources:
       - type: archive
-        url: https://github.com/coin3d/coin/releases/download/v4.0.2/coin-4.0.2-src.tar.gz
-        sha256: bd6bce1efedfdbc8a914bc11a10dd319a16d19c3ccc6979faf5c85e5e94a416e
+        url: https://github.com/coin3d/coin/releases/download/v4.0.3/coin-4.0.3-src.tar.gz
+        sha256: 66e3f381401f98d789154eb00b2996984da95bc401ee69cc77d2a72ed86dfda8
 
   - name: soqt
     buildsystem: cmake-ninja
@@ -229,8 +229,10 @@ modules:
         PREFIX: /app
     sources:
       - type: archive
-        url: https://github.com/coin3d/pivy/archive/0.6.8.tar.gz
-        sha256: c443dd7dd724b0bfa06427478b9d24d31e0c3b5138ac5741a2917a443b28f346
+        url: https://github.com/coin3d/pivy/archive/refs/tags/0.6.9.a0.tar.gz
+        sha256: 2c2da80ae216fe06394562f4a8fc081179d678f20bf6f8ec412cda470d7eeb91
+      - type: patch
+        path: patches/pivy-cmake-prefix.patch
       - type: shell
         commands:
           - sed -i 's|QUIET|REQUIRED|g' CMakeLists.txt
@@ -414,10 +416,8 @@ modules:
       - /bin
     sources:
       - type: archive
-        url: https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.6.1.tar.gz
-        sha256: 89c7957458740b763ae828c345240b8a1d29c2c1fed0f065f99b73181b0b2642
-        mirror-urls:
-          - https://www.gfd-dennou.org/library/netcdf/unidata-mirror/netcdf-4.6.1.tar.gz
+        url: https://downloads.unidata.ucar.edu/netcdf-c/4.9.2/netcdf-c-4.9.2.tar.gz
+        sha256: cf11babbbdb9963f09f55079e0b019f6d0371f52f8e1264a5ba8e9fdab1a6c48
 
   - name: freeimage
     buildsystem: simple
@@ -704,7 +704,7 @@ modules:
       - type: git
         url: https://github.com/jbeder/yaml-cpp
         commit: f7320141120f720aecc4c32be25586e7da9eb978 # tag 0.8.0
-  
+
   - name: FreeCAD
     buildsystem: cmake-ninja
     builddir: true

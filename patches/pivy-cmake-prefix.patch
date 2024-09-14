@@ -1,0 +1,12 @@
+diff --git a/setup.py b/setup.py
+index 14f0f1b..adf387c 100755
+--- a/setup.py
++++ b/setup.py
+@@ -194,6 +194,7 @@ class pivy_build(build):
+     def check_with_cmake(self):
+         dirname = os.path.join(os.path.dirname(__file__), "distutils_cmake")
+         cmake_command = ['cmake', dirname]
++        cmake_command += ['-D', 'CMAKE_PREFIX_PATH=/app']
+         try:
+             cmake_command += ['-G', os.environ['GENERATOR']]
+         except KeyError:

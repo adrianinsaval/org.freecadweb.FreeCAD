@@ -27,7 +27,6 @@ cleanup:
   - /share/man
   - '*.a'
   - '*.la'
-cleanup-commands: [/app/cleanup-BaseApp.sh]
 build-options:
   append-path: /usr/lib/sdk/llvm15/bin
   append-ld-library-path: /usr/lib/sdk/llvm15/lib
@@ -161,6 +160,13 @@ modules:
     builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DALLOW_UNSUPPORTED=ON
+      - -DHDF5_BUILD_HL_LIB=ON
+      - -DHDF5_BUILD_CPP_LIB=ON
+      - -DHDF5_ENABLE_PARALLEL=ON
+      - -DHDF5_ENABLE_Z_LIB_SUPPORT=ON
+
     cleanup:
       - /bin
     sources:
@@ -178,14 +184,16 @@ modules:
       - /share/doc
     sources:
       - type: archive
-        url: https://files.salome-platform.org/Salome/medfile/med-5.0.0.tar.bz2
-        sha256: 267e76d0c67ec51c10e3199484ec1508baa8d5ed845c628adf660529dce7a3d4
+        url: http://files.salome-platform.org/Salome/medfile/med-4.1.1.tar.gz
+        sha256: a082b705d1aafe95d3a231d12c57f0b71df554c253e190acca8d26fc775fb1e6
+      - type: patch
+        path: patches/med-hdf5-1.12.patch
 
   - name: libspnav
     sources:
       - type: archive
-        url: https://downloads.sourceforge.net/project/spacenav/spacenav%20library%20%28SDK%29/libspnav%201.0/libspnav-1.0.tar.gz
-        sha256: 8849b7f7826d750f6956cf8f4f53937f2359ab6da97d6c834c71d5f771212e7c
+        url: https://github.com/FreeSpacenav/libspnav/releases/download/v1.1/libspnav-1.1.tar.gz
+        sha256: 04b297f68a10db4fa40edf68d7f823ba7b9d0442f2b665181889abe2cea42759
 
   - name: boost
     buildsystem: simple
@@ -490,9 +498,8 @@ modules:
       - /bin
     sources:
       - type: git
-        url: https://gitlab.com/adrianinsaval/occt.git/
-        # branch: V7_8_0
-        commit: b5d88dbacd01bb5554cfdbdaf94e8786c027a4d4
+        url: https://github.com/FreeCAD/OCCT.git
+        commit: 8db1faa32e326889fc770b4389629d686ccb52d5 # tag patched/V7_8_1
 
   # new deps for IfcOpenShell
   - name: mpfr
@@ -521,6 +528,12 @@ modules:
       - type: archive
         url: https://github.com/CGAL/cgal/releases/download/v5.3.1/CGAL-5.3.1.tar.xz
         sha256: ab76633b023d72ea3ca9ad22e2fa39ed3b5c8fb4e2c091a78035fabb5eb3fccf
+  - name: nlohmann-json
+    buildsystem: cmake-ninja
+    sources:
+      - type: archive
+        url: https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
+        sha256: 0d8ef5af7f9794e3263480193c491549b2ba6cc74bb018906202ada498a79406
 
   - name: IfcOpenShell
     buildsystem: cmake-ninja
@@ -539,6 +552,7 @@ modules:
       - -DMPFR_LIBRARY_DIR=/app/lib
       - -DHDF5_INCLUDE_DIR=/app/include
       - -DHDF5_LIBRARY_DIR=/app/lib
+      - -DEIGEN_DIR=/app/include/eigen3
       - -DCOLLADA_SUPPORT=OFF
       - -DLIBXML2_INCLUDE_DIR=/usr/include/libxml2
     build-options:
@@ -557,12 +571,12 @@ modules:
     sources:
       - type: git
         url: https://github.com/IfcOpenShell/IfcOpenShell.git
-        tag: v0.7.0.231127
-        commit: 58414777be599593bfdb1e04347699719af20140
+        tag: ifcopenshell-python-0.8.0
+        commit: e072870fd38139a8fb9050fc21727fad580e459c
       - type: patch
         paths:
           - patches/IfcOpenShell-hdf5.patch
-          - patches/IfcOpenShell-occt7.8.patch
+          #- patches/IfcOpenShell-occt7.8.patch
 
   - name: lapack
     buildsystem: cmake-ninja
@@ -658,8 +672,8 @@ modules:
       - pip3 install --exists-action=i --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} packaging
     sources:
       - type: file
-        url: https://files.pythonhosted.org/packages/05/8e/8de486cbd03baba4deef4142bd643a3e7bbe954a784dc1bb17142572d127/packaging-21.3-py3-none-any.whl
-        sha256: ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522
+        url: https://files.pythonhosted.org/packages/ec/1a/610693ac4ee14fcdf2d9bf3c493370e4f2ef7ae2e19217d7a237ff42367d/packaging-23.2-py3-none-any.whl
+        sha256: 8c491190033a9af7e1d931d0b5dacc2ef47509b34dd0de67ed209b5203fc88c7
 
   # For the FEM workbench.
   - python3-pyyaml.json
@@ -705,6 +719,17 @@ modules:
         url: https://github.com/jbeder/yaml-cpp
         commit: f7320141120f720aecc4c32be25586e7da9eb978 # tag 0.8.0
 
+  - name: pybind11
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DCMAKE_INSTALL_PREFIX:PATH=/app
+    sources:
+      - type: archive
+        url: https://github.com/pybind/pybind11/archive/refs/tags/v2.13.6.tar.gz
+        sha256: e08cb87f4773da97fa7b5f035de8763abc656d87d5773e62f6da0587d1f0ec20
+
   - name: FreeCAD
     buildsystem: cmake-ninja
     builddir: true
@@ -718,6 +743,7 @@ modules:
       - -DSHIBOKEN_INCLUDE_DIR=/app/include/shiboken6
       - -DPYSIDE_INCLUDE_DIR=/app/include/PySide6
       - -DINSTALL_TO_SITEPACKAGES=ON
+      - -DFREECAD_USE_PYBIND11=ON
     post-install:
       - install -Dm755 ../openscad.sh ${FLATPAK_DEST}/bin/openscad
       - ln -s /app/freecad/bin/FreeCADCmd /app/bin/FreeCADCmd
@@ -746,6 +772,6 @@ modules:
             sed -i 's|/usr|/app|g' cMake/FindOCC.cmake src/Gui/GraphvizView.cpp
             sitepackagesDir=$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["platlib"])' | sed 's|/usr|/app|')
             sed -i 's|${python_libs}|'"$sitepackagesDir"'|' src/Ext/freecad/CMakeLists.txt
-          # disable and test if it's needed
-          # We need to properly set the icon name
-          #- sed -i 's|name="application-x-extension-fcstd"|name="${FLATPAK_ID}.application-x-extension-fcstd"|' src/XDGData/org.freecad.FreeCAD.xml
+          # We need to change the doc icon name so it can be exported too
+          - sed -i 's|application-x-extension-fcstd|${FLATPAK_ID}.application-x-extension-fcstd|' src/Gui/CMakeLists.txt
+          - sed -i 's|name="application-x-extension-fcstd"|name="${FLATPAK_ID}.application-x-extension-fcstd"|' src/XDGData/org.freecad.FreeCAD.xml

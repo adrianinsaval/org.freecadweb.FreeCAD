@@ -1,12 +1,40 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 786eeab..3358cb8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,9 +1,11 @@
+ cmake_minimum_required(VERSION 3.18)
+ project(pivy)
+ 
++set(CMAKE_PREFIX_PATH "/usr/lib/$ENV{FLATPAK_ARCH}-linux-gnu/cmake")
++
+ 
+ option(DISABLE_SWIG_WARNINGS "if on no swig warnings are shown" OFF)
+-option(PIVY_USE_QT6 "Prefer Qt6 over Qt5 if available" OFF)
++option(PIVY_USE_QT6 "Prefer Qt6 over Qt5 if available" ON)
+ 
+ find_package(SWIG 4.0.0 REQUIRED)
+ include(${SWIG_USE_FILE})
+diff --git a/distutils_cmake/CMakeLists.txt b/distutils_cmake/CMakeLists.txt
+index 976be6a..6d427c3 100644
+--- a/distutils_cmake/CMakeLists.txt
++++ b/distutils_cmake/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ cmake_minimum_required(VERSION 3.5)
+-project(pivy_cmake_setup NONE)
++project(pivy_cmake_setup CXX)
+ 
+ 
+ find_package(Coin CONFIG REQUIRED)
 diff --git a/setup.py b/setup.py
-index 14f0f1b..adf387c 100755
+index 14f0f1b..71fc724 100755
 --- a/setup.py
 +++ b/setup.py
 @@ -194,6 +194,7 @@ class pivy_build(build):
      def check_with_cmake(self):
          dirname = os.path.join(os.path.dirname(__file__), "distutils_cmake")
          cmake_command = ['cmake', dirname]
-+        cmake_command += ['-D', 'CMAKE_PREFIX_PATH=/app']
++        cmake_command += ['-D', 'CMAKE_PREFIX_PATH=/usr/lib/$ENV{FLATPAK_ARCH}-linux-gnu/cmake']
          try:
              cmake_command += ['-G', os.environ['GENERATOR']]
          except KeyError:

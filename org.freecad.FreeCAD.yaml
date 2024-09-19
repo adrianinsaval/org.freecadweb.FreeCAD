@@ -7,7 +7,6 @@ command: FreeCAD
 desktop-file-name-prefix: "(beta) "
 finish-args:
   - --share=ipc
-  - --socket=x11
   - --socket=wayland
   - --socket=fallback-x11
   - --device=dri
@@ -160,7 +159,6 @@ modules:
     builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
-      - -DCMAKE_INSTALL_PREFIX=/app
       - -DALLOW_UNSUPPORTED=ON
       - -DHDF5_BUILD_HL_LIB=ON
       - -DHDF5_BUILD_CPP_LIB=ON
@@ -638,8 +636,8 @@ modules:
       - install -m0755 ccx_*/src/ccx_*_MT /app/bin/ccx
     sources:
       - type: archive
-        url: http://www.dhondt.de/ccx_2.19.src.tar.bz2
-        sha256: c75a69685811e7996c9428b491c82f0eff777cc9a0999f469d10156d75f26d07
+        url: http://www.dhondt.de/ccx_2.22.src.tar.bz2
+        sha256: 3a94dcc775a31f570229734b341d6b06301ebdc759863df901c8b9bf1854c0bc
         strip-components: 2
       - type: patch
         path: patches/calculix-cxx-paths.patch
@@ -724,7 +722,6 @@ modules:
     builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-      - -DCMAKE_INSTALL_PREFIX:PATH=/app
     sources:
       - type: archive
         url: https://github.com/pybind/pybind11/archive/refs/tags/v2.13.6.tar.gz
